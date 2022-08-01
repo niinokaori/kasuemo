@@ -1,0 +1,25 @@
+{
+  "name": "kasuemo-lambda",
+  "version": "0.1.0",
+  "bin": {
+    "kasuemo": "bin/kasuemo.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.95",
+    "@types/jest": "^26.0.24",
+    "jest": "^26.4.2",
+    "prettier": "^2.6.2",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.121.0",
+    "@slack/web-api": "^6.7.1"
+  }
+}
