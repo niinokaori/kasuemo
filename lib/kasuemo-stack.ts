@@ -10,7 +10,7 @@ export class LambdaSkeletonStack extends Stack {
     super(scope, id, props);
 
     const lambda = new Lambda.Function(this, "index", {
-      runtime: Lambda.Runtime.NODEJS_14_X,
+      runtime: Lambda.Runtime.NODEJS_16_X,
       code: Lambda.Code.fromAsset(path.join(__dirname, "../src")),
       handler: "index.handler",
     });
