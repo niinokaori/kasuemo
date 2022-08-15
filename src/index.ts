@@ -19,9 +19,15 @@ export const handler: Handler = async (event, context) => {
   // @ts-ignore
   const objectText = await consumers.text(response.Body)
   const oldEmojiList = JSON.parse(objectText)
-  console.log(oldEmojiList)
   // Set the parameters.
-
+  const a = Object.keys(oldEmojiList.emoji).reduce<{ [key: string]: string }>((emojiList,current)=>{
+    if (oldEmojiList.emoji[current].startsWith('http'))
+    {
+      emojiList[current]=oldEmojiList.emoji[current]
+    }
+    return emojiList
+  },{})
+  console.log(a)
 };
 
 async function upload (){

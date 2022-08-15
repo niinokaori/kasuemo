@@ -9,7 +9,7 @@
     "diff": "cdk diff",
     "prediff": "npm run build",
     "deploy": "cdk deploy",
-    "predeploy": "npm run build",
+    "predeploy": "cd src && npm run build",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest"
