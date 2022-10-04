@@ -7,6 +7,8 @@ import consumers from 'stream/consumers'
 const REGION = "ap-northeast-1"; //e.g. "us-east-1"
 // Create an Amazon S3 service client object.
 const s3Client = new S3Client({ region: REGION });
+const token = process.env.SLACK_TOKEN;
+const slackClient = new WebClient(token);
 
 export const handler: Handler = async (event, context) => {
   console.log(event, context);
@@ -18,7 +20,8 @@ export const handler: Handler = async (event, context) => {
   const allEmoji = latestEmojiList.length;
   console.log(addedEmoji);
   console.log(removedEmoji);
-  console.log(allEmoji)
+  console.log(allEmoji);
+  await postMessage(addedEmoji,removedEmoji,allEmoji);
 };
 
 async function getOldEmojiList() {
@@ -63,8 +66,36 @@ async function upload (emoji:Array<string>){
 }
 
 async function getLatestEmojiList() {
-  const token = process.env.SLACK_TOKEN;
-  const web = new WebClient(token);
-  const emoji = await web.emoji.list();
+  const emoji = await slackClient.emoji.list();
   return emoji;
+}
+
+function getToday() {
+  const today = new Date()
+  return `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
+}
+
+function prettyPrint(addedEmoji: string[]) {
+  return addedEmoji.map(emoji => `:${emoji}:`).join("")
+}
+
+async function postMessage(addedEmoji: string[], removedEmoji:number, allemoji:number) {
+  try {
+    const result = await slackClient.chat.postMessage({
+      channel: "CFBE8GSCF",
+      text: 
+        `${getToday()} 新しく増えた絵文字  :clap:
+        ------------------------
+        ${prettyPrint(addedEmoji)}
+
+        削除されたカスタム絵文字は合計 ${removedEmoji} 件です:wave:
+        
+        カスタム絵文字は合計 ${allemoji} 件です:sunglasses:`
+    });
+
+    console.log(result);
+  }
+  catch (error) {
+    console.error(error);
+  }
 }
